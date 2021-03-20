@@ -2,7 +2,7 @@ name: stream_subscriber
 description: >-
   Observable objects for asynchronously listening for changes to values and
   collections, plus a mixin to easily manage streams on any class.
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/james-alex/stream_subscriber
 
 environment:
