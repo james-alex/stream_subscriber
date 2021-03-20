@@ -402,23 +402,33 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   }
 
   @override
-  void sort([_Compare<E>? compare, bool notifyListeners = true]) {
+  void sort([_Compare<E>? compare]) {
     final elements = _toList();
     value.sort(compare);
     if (elements != null) {
       _notifyEventListeners(CollectionEventType.update, elements);
     }
-    if (notifyListeners) this.notifyListeners(value);
+    notifyListeners(value);
+  }
+
+  /// [sort]s the list without notifying any listeners.
+  void silentSort([_Compare<E>? compare]) {
+    value.sort(compare);
   }
 
   @override
-  void shuffle([Random? random, bool notifyListeners = true]) {
+  void shuffle([Random? random]) {
     final elements = _toList();
     value.shuffle(random);
     if (elements != null) {
       _notifyEventListeners(CollectionEventType.update, elements);
     }
-    if (notifyListeners) this.notifyListeners(value);
+    notifyListeners(value);
+  }
+
+  /// [shuffle]s the list without notifying any listeners.
+  void silentShuffle([Random? random]) {
+    value.shuffle(random);
   }
 
   @override
