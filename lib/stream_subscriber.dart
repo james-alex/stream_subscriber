@@ -1,3 +1,5 @@
+/// Observable objects for asynchronously listening for changes to values
+/// and collections, with a mixin to easily manage streams on any class.
 library stream_subscriber;
 
 export 'src/helpers/stream_exception.dart';
