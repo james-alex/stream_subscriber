@@ -4,12 +4,12 @@ import 'package:stream_subscriber/stream_subscriber.dart';
 
 void main() {
   test('StreamValue', () async {
-    final streamValue = StreamValue<int>(null);
+    final streamValue = StreamValue<int?>(null);
 
     expect(streamValue.isObserved, equals(false));
 
     var updated = 0;
-    var onUpdateValue = 0;
+    int? onUpdateValue = 0;
 
     streamValue.onUpdate = (value) {
       updated++;
@@ -24,11 +24,11 @@ void main() {
 
     expect(streamValue.hasListener, equals(false));
 
-    Completer<void> completer;
-    Future<void> onComplete;
+    late Completer<void> completer;
+    late Future<void> onComplete;
 
     var listened = 0;
-    var onListenValue = 0;
+    int? onListenValue = 0;
 
     streamValue.addListener((value) {
       listened++;
@@ -104,8 +104,8 @@ void main() {
     test('Single-Event', () async {
       final streamList = StreamList<int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamList.isObserved, equals(false));
       expect(streamList.hasEvent, equals(false));
@@ -113,7 +113,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      List<int> onUpdateValue;
+      List<int>? onUpdateValue;
 
       streamList.onUpdate = (value) {
         updated++;
@@ -132,7 +132,7 @@ void main() {
       expect(streamList.hasListener, equals(false));
 
       var listened = 0;
-      var lastListenedValue = 0;
+      int? lastListenedValue = 0;
 
       streamList.addListener((value) {
         listened++;
@@ -190,7 +190,7 @@ void main() {
       expect(streamList.hasEvent, equals(false));
 
       var events = 0;
-      int eventValue;
+      int? eventValue;
 
       streamList.onEvent = (event) {
         events++;
@@ -223,9 +223,9 @@ void main() {
 
       var listenedEvents = 0;
 
-      int lastValueAdded;
-      int lastValueRemoved;
-      int lastValueUpdated;
+      int? lastValueAdded;
+      int? lastValueRemoved;
+      int? lastValueUpdated;
 
       streamList.addEventListener((event) {
         listenedEvents++;
@@ -353,7 +353,7 @@ void main() {
       expect(streamList.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamList.onChange = (change) {
         changes++;
@@ -383,9 +383,9 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
-      int lastChangeValueUpdated;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
+      int? lastChangeValueUpdated;
 
       streamList.addChangeListener((change) {
         listenedChanges++;
@@ -526,8 +526,8 @@ void main() {
     test('Multi-Event', () async {
       final streamList = StreamList<int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamList.isObserved, equals(false));
       expect(streamList.hasEvent, equals(false));
@@ -539,7 +539,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      List<int> onUpdateValue;
+      List<int>? onUpdateValue;
 
       streamList.onUpdate = (value) {
         updated++;
@@ -558,7 +558,7 @@ void main() {
       expect(streamList.hasListener, equals(false));
 
       var listened = 0;
-      List<int> lastValuesListened;
+      List<int>? lastValuesListened;
 
       streamList.addListener((value) {
         listened++;
@@ -619,7 +619,7 @@ void main() {
       expect(streamList.hasEvent, equals(false));
 
       var events = 0;
-      List<int> eventValues;
+      late List<int?> eventValues;
       var numberOfEventValues = 0;
 
       streamList.onEvent = (event) {
@@ -655,9 +655,9 @@ void main() {
 
       var listenedEvents = 0;
 
-      List<int> lastValuesAdded;
-      List<int> lastValuesRemoved;
-      List<int> lastValuesUpdated;
+      List<int?>? lastValuesAdded;
+      List<int?>? lastValuesRemoved;
+      List<int?>? lastValuesUpdated;
 
       streamList.addEventListener((event) {
         listenedEvents++;
@@ -787,7 +787,7 @@ void main() {
       expect(streamList.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamList.onChange = (change) {
         changes++;
@@ -817,9 +817,9 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
-      int lastChangeValueUpdated;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
+      int? lastChangeValueUpdated;
 
       streamList.addChangeListener((change) {
         listenedChanges++;
@@ -836,7 +836,7 @@ void main() {
             break;
         }
 
-        if (change.value % 10 == 9) {
+        if (change.value != null && change.value! % 10 == 9) {
           completer.complete();
         }
       });
@@ -968,8 +968,8 @@ void main() {
     test('Single-Event', () async {
       final streamSet = StreamSet<int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamSet.isObserved, equals(false));
       expect(streamSet.hasEvent, equals(false));
@@ -977,7 +977,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      List<int> onUpdateValue;
+      List<int>? onUpdateValue;
 
       streamSet.onUpdate = (value) {
         updated++;
@@ -996,7 +996,7 @@ void main() {
       expect(streamSet.hasListener, equals(false));
 
       var listened = 0;
-      var lastListenedValue = 0;
+      int? lastListenedValue = 0;
 
       streamSet.addListener((value) {
         listened++;
@@ -1054,7 +1054,7 @@ void main() {
       expect(streamSet.hasEvent, equals(false));
 
       var events = 0;
-      int eventValue;
+      int? eventValue;
 
       streamSet.onEvent = (event) {
         events++;
@@ -1087,8 +1087,8 @@ void main() {
 
       var listenedEvents = 0;
 
-      int lastValueAdded;
-      int lastValueRemoved;
+      int? lastValueAdded;
+      int? lastValueRemoved;
 
       streamSet.addEventListener((event) {
         listenedEvents++;
@@ -1163,7 +1163,7 @@ void main() {
       expect(streamSet.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamSet.onChange = (change) {
         changes++;
@@ -1197,8 +1197,8 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
 
       streamSet.addChangeListener((change) {
         listenedChanges++;
@@ -1295,8 +1295,8 @@ void main() {
     test('Multi-Event', () async {
       final streamSet = StreamSet<int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamSet.isObserved, equals(false));
       expect(streamSet.hasEvent, equals(false));
@@ -1308,7 +1308,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      List<int> onUpdateValue;
+      List<int>? onUpdateValue;
 
       streamSet.onUpdate = (value) {
         updated++;
@@ -1327,7 +1327,7 @@ void main() {
       expect(streamSet.hasListener, equals(false));
 
       var listened = 0;
-      List<int> lastValuesListened;
+      List<int>? lastValuesListened;
 
       streamSet.addListener((value) {
         listened++;
@@ -1388,7 +1388,7 @@ void main() {
       expect(streamSet.hasEvent, equals(false));
 
       var events = 0;
-      List<int> eventValues;
+      late List<int?> eventValues;
       var numberOfEventValues = 0;
 
       streamSet.onEvent = (event) {
@@ -1424,8 +1424,8 @@ void main() {
 
       var listenedEvents = 0;
 
-      List<int> lastValuesAdded;
-      List<int> lastValuesRemoved;
+      List<int?>? lastValuesAdded;
+      List<int?>? lastValuesRemoved;
 
       streamSet.addEventListener((event) {
         listenedEvents++;
@@ -1506,7 +1506,7 @@ void main() {
       expect(streamSet.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamSet.onChange = (change) {
         changes++;
@@ -1536,8 +1536,8 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
 
       streamSet.addChangeListener((change) {
         listenedChanges++;
@@ -1553,7 +1553,7 @@ void main() {
             break;
         }
 
-        if (change.value % 10 == 9) {
+        if (change.value != null && change.value! % 10 == 9) {
           completer.complete();
         }
       });
@@ -1640,8 +1640,8 @@ void main() {
     test('Single-Event', () async {
       final streamMap = StreamMap<int, int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamMap.isObserved, equals(false));
       expect(streamMap.hasEvent, equals(false));
@@ -1649,7 +1649,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      Map<int, int> onUpdateValue;
+      Map<int, int>? onUpdateValue;
 
       streamMap.onUpdate = (value) {
         updated++;
@@ -1668,7 +1668,7 @@ void main() {
       expect(streamMap.hasListener, equals(false));
 
       var listened = 0;
-      var lastListenedValue = 0;
+      int? lastListenedValue = 0;
 
       streamMap.addListener((value) {
         listened++;
@@ -1726,7 +1726,7 @@ void main() {
       expect(streamMap.hasEvent, equals(false));
 
       var events = 0;
-      int eventValue;
+      int? eventValue;
 
       streamMap.onEvent = (event) {
         events++;
@@ -1759,9 +1759,9 @@ void main() {
 
       var listenedEvents = 0;
 
-      int lastValueAdded;
-      int lastValueRemoved;
-      int lastValueUpdated;
+      int? lastValueAdded;
+      int? lastValueRemoved;
+      int? lastValueUpdated;
 
       streamMap.addEventListener((event) {
         listenedEvents++;
@@ -1865,7 +1865,7 @@ void main() {
       expect(streamMap.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamMap.onChange = (change) {
         changes++;
@@ -1895,9 +1895,9 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
-      int lastChangeValueUpdated;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
+      int? lastChangeValueUpdated;
 
       streamMap.addChangeListener((change) {
         listenedChanges++;
@@ -2033,8 +2033,8 @@ void main() {
     test('Multi-Event', () async {
       final streamMap = StreamMap<int, int>();
 
-      Completer<void> completer;
-      Future<void> onComplete;
+      late Completer<void> completer;
+      late Future<void> onComplete;
 
       expect(streamMap.isObserved, equals(false));
       expect(streamMap.hasEvent, equals(false));
@@ -2061,7 +2061,7 @@ void main() {
 
       // Test [onUpdate].
       var updated = 0;
-      Map<int, int> onUpdateValue;
+      Map<int, int>? onUpdateValue;
 
       streamMap.onUpdate = (value) {
         updated++;
@@ -2080,7 +2080,7 @@ void main() {
       expect(streamMap.hasListener, equals(false));
 
       var listened = 0;
-      List<int> lastValuesListened;
+      List<int>? lastValuesListened;
 
       streamMap.addListener((value) {
         listened++;
@@ -2143,7 +2143,7 @@ void main() {
       expect(streamMap.hasEvent, equals(false));
 
       var events = 0;
-      List<int> eventValues;
+      late List<int?> eventValues;
       var numberOfEventValues = 0;
 
       streamMap.onEvent = (event) {
@@ -2179,9 +2179,9 @@ void main() {
 
       var listenedEvents = 0;
 
-      List<int> lastValuesAdded;
-      List<int> lastValuesRemoved;
-      List<int> lastValuesUpdated;
+      List<int?>? lastValuesAdded;
+      List<int?>? lastValuesRemoved;
+      List<int?>? lastValuesUpdated;
 
       streamMap.addEventListener((event) {
         listenedEvents++;
@@ -2290,7 +2290,7 @@ void main() {
       expect(streamMap.hasChangeEvent, equals(false));
 
       var changes = 0;
-      int lastValueChanged;
+      int? lastValueChanged;
 
       streamMap.onChange = (change) {
         changes++;
@@ -2320,9 +2320,9 @@ void main() {
 
       var listenedChanges = 0;
 
-      int lastChangeValueAdded;
-      int lastChangeValueRemoved;
-      int lastChangeValueUpdated;
+      int? lastChangeValueAdded;
+      int? lastChangeValueRemoved;
+      int? lastChangeValueUpdated;
 
       streamMap.addChangeListener((change) {
         listenedChanges++;
@@ -2339,7 +2339,7 @@ void main() {
             break;
         }
 
-        if (change.value % 10 == 9) {
+        if (change.value != null && change.value! % 10 == 9) {
           completer.complete();
         }
       });

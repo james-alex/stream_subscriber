@@ -36,10 +36,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// [onChange] is a synchronous event called individually for every
   /// element added, removed, or updated in the collection.
   StreamMap({
-    Map<K, V> value,
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    Map<K, V>? value,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) : super(value ?? <K, V>{},
             onUpdate: onUpdate, onEvent: onEvent, onChange: onChange);
 
@@ -54,12 +54,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// It iterates in key insertion order.
   factory StreamMap.from(
     Map<K, V> other, {
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) {
-    assert(other != null);
-
     return StreamMap<K, V>(
       value: Map<K, V>.from(other),
       onUpdate: onUpdate,
@@ -76,12 +74,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// It iterates in key insertion order.
   factory StreamMap.of(
     Map<K, V> other, {
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) {
-    assert(other != null);
-
     return StreamMap<K, V>(
       value: Map<K, V>.of(other),
       onUpdate: onUpdate,
@@ -100,16 +96,17 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// The returned map allows `null` as a key.
   /// It iterates in key insertion order.
   factory StreamMap.identity({
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
-  }) =>
-      StreamMap<K, V>(
-        value: Map<K, V>.identity(),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
+  }) {
+    return StreamMap<K, V>(
+      value: Map<K, V>.identity(),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Creates a [StreamMap] in which the keys and values are computed from the
   /// [iterable].
@@ -152,14 +149,12 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// last occurrence of a key will simply overwrite any previous value.
   factory StreamMap.fromIterable(
     Iterable iterable, {
-    _Compute<K> key,
-    _Compute<V> value,
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    _Compute<K>? key,
+    _Compute<V>? value,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) {
-    assert(iterable != null);
-
     return StreamMap<K, V>(
       value: Map.fromIterable(iterable, key: key, value: value),
       onUpdate: onUpdate,
@@ -193,13 +188,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   factory StreamMap.fromIterables(
     Iterable<K> keys,
     Iterable<V> values, {
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) {
-    assert(keys != null);
-    assert(values != null);
-
     return StreamMap<K, V>(
       value: Map<K, V>.fromIterables(keys, values),
       onUpdate: onUpdate,
@@ -222,12 +214,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// values, then the returned map can be used as a `Map<K2, V2>`.
   static StreamMap<K2, V2> castFrom<K, V, K2, V2>(
     Map<K, V> source, {
-    OnUpdate<Map<K2, V2>> onUpdate,
-    OnEvent<CollectionEvent<K2, V2>> onEvent,
-    OnChange<CollectionChangeEvent<K2, V2>> onChange,
+    OnUpdate<Map<K2, V2>>? onUpdate,
+    OnEvent<CollectionEvent<K2, V2>>? onEvent,
+    OnChange<CollectionChangeEvent<K2, V2>>? onChange,
   }) {
-    assert(source != null);
-
     return StreamMap<K2, V2>(
       value: Map.castFrom(source),
       onUpdate: onUpdate,
@@ -243,12 +233,10 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   /// later occurrences overwrite the earlier ones.
   factory StreamMap.fromEntries(
     Iterable<MapEntry<K, V>> entries, {
-    OnUpdate<Map<K, V>> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
-    OnChange<CollectionChangeEvent<K, V>> onChange,
+    OnUpdate<Map<K, V>>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
+    OnChange<CollectionChangeEvent<K, V>>? onChange,
   }) {
-    assert(entries != null);
-
     return StreamMap<K, V>(
       value: Map.fromEntries(entries),
       onUpdate: onUpdate,
@@ -261,13 +249,13 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   Map<RK, RV> cast<RK, RV>() => value.cast<RK, RV>();
 
   @override
-  bool containsValue(Object value) => this.value.containsValue(value);
+  bool containsValue(Object? value) => this.value.containsValue(value);
 
   @override
-  bool containsKey(Object key) => value.containsKey(key);
+  bool containsKey(Object? key) => value.containsKey(key);
 
   @override
-  V operator [](Object key) => value[key];
+  V? operator [](Object? key) => value[key];
 
   @override
   void operator []=(K key, V value) {
@@ -279,20 +267,13 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   Iterable<MapEntry<K, V>> get entries => value.entries;
 
   @override
-  Map<K2, V2> map<K2, V2>(_Mapper<K, K2, V, V2> f) {
-    assert(f != null);
-
-    return value.map<K2, V2>(f);
-  }
+  Map<K2, V2> map<K2, V2>(_Mapper<K, K2, V, V2> f) => value.map<K2, V2>(f);
 
   @override
   void addEntries(
-    Iterable<MapEntry<K, V>> newEntries, [
+    Iterable<MapEntry<K, V>> newEntries, {
     bool notifyListeners = true,
-  ]) {
-    assert(newEntries != null);
-    assert(notifyListeners != null);
-
+  }) {
     value.addEntries(newEntries);
 
     if (notifyListeners) {
@@ -302,16 +283,13 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
         for (var entry in newEntries) {
           events.addAll(<K, V>{entry.key: entry.value});
 
-          notifyChangeListeners(
-            CollectionChangeEvent(
-                CollectionEventType.addition, entry.key, entry.value),
-          );
+          notifyChangeListeners(CollectionChangeEvent(
+              CollectionEventType.addition, entry.key, entry.value));
         }
 
         if (events.isNotEmpty) {
           notifyEventListeners(
-            CollectionEvent<K, V>(CollectionEventType.addition, events),
-          );
+              CollectionEvent<K, V>(CollectionEventType.addition, events));
         }
       }
 
@@ -323,54 +301,40 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   V update(
     K key,
     _Update<V> update, {
-    _IfAbsent<V> ifAbsent,
+    _IfAbsent<V>? ifAbsent,
     bool notifyListeners = true,
   }) {
-    assert(update != null);
-    assert(notifyListeners != null);
-
     final isAbsent = value.containsKey(key);
-
-    assert(isAbsent || ifAbsent != null);
-
+    if (isAbsent || ifAbsent != null) {
+      throw UnsupportedError(
+          '[ifAbsent] must be provided if [key] isn\'t in the map.');
+    }
     final updated = value.update(key, update, ifAbsent: ifAbsent);
-
     if (notifyListeners) {
       final eventType =
           isAbsent ? CollectionEventType.addition : CollectionEventType.update;
       notifyAllListeners(eventType, key, updated);
     }
-
     return updated;
   }
 
   @override
   void updateAll(_Updater<K, V> update, {bool notifyListeners = true}) {
-    assert(update != null);
-    assert(notifyListeners != null);
-
     if (notifyListeners) {
       final events = <K, V>{};
-
       value.forEach((key, value) {
         final newValue = update(key, value);
-
         if (value != newValue) {
           this.value[key] = newValue;
-
           events.addAll(<K, V>{key: newValue});
-
           notifyChangeListeners(
-            CollectionChangeEvent(CollectionEventType.update, key, newValue),
-          );
+              CollectionChangeEvent(CollectionEventType.update, key, newValue));
         }
       });
 
       if (events.isNotEmpty) {
         notifyEventListeners(
-          CollectionEvent<K, V>(CollectionEventType.update, events),
-        );
-
+            CollectionEvent<K, V>(CollectionEventType.update, events));
         this.notifyListeners(value);
       }
     } else {
@@ -380,60 +344,47 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
 
   @override
   void removeWhere(_Predicate<K, V> predicate, {bool notifyListeners = true}) {
-    assert(predicate != null);
-    assert(notifyListeners != null);
-
     final map = notifyListeners ? _toMap() : null;
 
     if (notifyListeners) {
       final events = <K, V>{};
 
-      map.forEach((key, value) {
+      map!.forEach((key, value) {
         if (predicate(key, value)) {
           events.addAll(<K, V>{key: value});
-
           this.value.remove(key);
-
           notifyChangeListeners(
-            CollectionChangeEvent(CollectionEventType.removal, key, value),
-          );
+              CollectionChangeEvent(CollectionEventType.removal, key, value));
         }
       });
 
       if (events.isNotEmpty) {
         notifyEventListeners(
-          CollectionEvent<K, V>(CollectionEventType.removal, events),
-        );
+            CollectionEvent<K, V>(CollectionEventType.removal, events));
       }
     } else {
       value.removeWhere(predicate);
     }
 
-    if (notifyListeners && value.length != map.length) {
+    if (notifyListeners && value.length != map!.length) {
       this.notifyListeners(value);
     }
   }
 
   @override
   V putIfAbsent(K key, _IfAbsent<V> ifAbsent, {bool notifyListeners = true}) {
-    assert(ifAbsent != null);
-    assert(notifyListeners != null);
-
     if (!value.containsKey(key)) {
       value.putIfAbsent(key, ifAbsent);
       if (notifyListeners) {
-        notifyAllListeners(CollectionEventType.addition, key, value[key]);
+        notifyAllListeners(CollectionEventType.addition, key, value[key]!);
       }
     }
 
-    return value[key];
+    return value[key]!;
   }
 
   @override
   void addAll(Map<K, V> other, {bool notifyListeners = true}) {
-    assert(other != null);
-    assert(notifyListeners != null);
-
     value.addAll(other);
 
     if (notifyListeners) {
@@ -442,16 +393,13 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
 
         other.forEach((key, value) {
           events.addAll(<K, V>{key: value});
-
           notifyChangeListeners(
-            CollectionChangeEvent(CollectionEventType.addition, key, value),
-          );
+              CollectionChangeEvent(CollectionEventType.addition, key, value));
         });
 
         if (events.isNotEmpty) {
           notifyEventListeners(
-            CollectionEvent<K, V>(CollectionEventType.addition, events),
-          );
+              CollectionEvent<K, V>(CollectionEventType.addition, events));
         }
       }
 
@@ -460,46 +408,34 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
   }
 
   @override
-  V remove(Object key, {bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
+  V? remove(Object? key, {bool notifyListeners = true}) {
     final value = this.value.remove(key);
-
     if (notifyListeners) {
-      notifyAllListeners(CollectionEventType.removal, key, value);
+      notifyAllListeners(CollectionEventType.removal, key as K, value);
     }
-
     return value;
   }
 
   @override
   void clear({bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final map = notifyListeners ? _toMap() : null;
-
     value.clear();
-
     if (notifyListeners) {
       if (hasEvent || hasChangeEvent) {
         final events = <K, V>{};
-
-        map.forEach((key, value) {
+        map!.forEach((key, value) {
           events.addAll(<K, V>{key: value});
-
           notifyChangeListeners(
-            CollectionChangeEvent(CollectionEventType.removal, key, value),
-          );
+              CollectionChangeEvent(CollectionEventType.removal, key, value));
         });
 
         if (events.isNotEmpty) {
           notifyEventListeners(
-            CollectionEvent<K, V>(CollectionEventType.removal, events),
-          );
+              CollectionEvent<K, V>(CollectionEventType.removal, events));
         }
       }
 
-      if (value.length != map.length) {
+      if (value.length != map!.length) {
         this.notifyListeners(value);
       }
     }
@@ -507,8 +443,6 @@ class StreamMap<K, V> extends StreamCollection<Map<K, V>, K, V>
 
   @override
   void forEach(_ForEach<K, V> f) {
-    assert(f != null);
-
     value.forEach(f);
   }
 

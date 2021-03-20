@@ -31,7 +31,7 @@ class StreamValue<T> with StreamSubscriber<T> {
   T _value;
 
   /// Called after [value] is updated, before the listeners are notified.
-  OnUpdate<T> onUpdate;
+  OnUpdate<T>? onUpdate;
 
   /// Returns `true` if there are any active listeners or
   /// if [onUpdate] is not `null`.
@@ -49,14 +49,8 @@ class StreamValue<T> with StreamSubscriber<T> {
   /// Notifies all subscribed listeners of an [event].
   @override
   void notifyListeners(T event) {
-    if (wasDisposed) {
-      throw StreamException();
-    }
-
-    if (onUpdate != null) {
-      onUpdate(event);
-    }
-
+    if (wasDisposed) throw StreamException();
+    if (onUpdate != null) onUpdate!(event);
     super.notifyListeners(event);
   }
 

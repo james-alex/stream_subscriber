@@ -21,10 +21,10 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   /// [onChange] is a synchronous event called individually for every
   /// element added, removed, or updated in the collection.
   StreamSet({
-    Set<E> value,
-    OnUpdate<Set<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
+    Set<E>? value,
+    OnUpdate<Set<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
   }) : super(
           value ?? <E>{},
           onUpdate: onUpdate,
@@ -39,15 +39,17 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   ///
   /// The set is equivalent to one created by `new LinkedHashSet<E>.identity()`.
   factory StreamSet.identity({
-    OnUpdate<Set<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
-  }) =>
-      StreamSet<E>(
-          value: Set<E>.identity(),
-          onUpdate: onUpdate,
-          onEvent: onEvent,
-          onChange: onChange);
+    OnUpdate<Set<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
+  }) {
+    return StreamSet<E>(
+      value: Set<E>.identity(),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Creates a [StreamSet] that contains all [elements].
   ///
@@ -69,12 +71,10 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   /// `LinkedHashSet<E>.from(elements)`.
   factory StreamSet.from(
     Iterable elements, {
-    OnUpdate<Set<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
+    OnUpdate<Set<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
   }) {
-    assert(elements != null);
-
     return StreamSet<E>(
       value: Set.from(elements),
       onUpdate: onUpdate,
@@ -93,12 +93,10 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   /// `LinkedHashSet<E>.of(elements)`.
   factory StreamSet.of(
     Iterable<E> elements, {
-    OnUpdate<Set<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
+    OnUpdate<Set<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
   }) {
-    assert(elements != null);
-
     return StreamSet<E>(
       value: Set<E>.of(elements),
       onUpdate: onUpdate,
@@ -127,13 +125,11 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   /// then the returned set can be used as a `Set<T>`.
   static StreamSet<T> castFrom<S, T>(
     Set<S> source, {
-    Set<R> Function<R>() newSet,
-    OnUpdate<Set<T>> onUpdate,
-    OnEvent<CollectionEvent<int, T>> onEvent,
-    OnChange<CollectionChangeEvent<int, T>> onChange,
+    Set<R> Function<R>()? newSet,
+    OnUpdate<Set<T>>? onUpdate,
+    OnEvent<CollectionEvent<int, T>>? onEvent,
+    OnChange<CollectionChangeEvent<int, T>>? onChange,
   }) {
-    assert(source != null);
-
     return StreamSet<T>(
       value: Set.castFrom<S, T>(source, newSet: newSet),
       onUpdate: onUpdate,
@@ -146,127 +142,76 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   Iterator<E> get iterator => value.iterator;
 
   @override
-  StreamSet<R> cast<R>() => value.cast<R>();
+  Set<R> cast<R>() => value.cast<R>();
 
   @override
-  Iterable<E> followedBy(Iterable<E> other) {
-    assert(other != null);
-
-    return value.followedBy(other);
-  }
+  Iterable<E> followedBy(Iterable<E> other) => value.followedBy(other);
 
   @override
-  Iterable<T> map<T>(T Function(E e) f) {
-    assert(f != null);
-
-    return value.map(f);
-  }
+  Iterable<T> map<T>(T Function(E) f) => value.map(f);
 
   @override
-  Iterable<E> where(bool Function(E element) test) {
-    assert(test != null);
-
-    return value.where(test);
-  }
+  Iterable<E> where(bool Function(E) test) => value.where(test);
 
   @override
   Iterable<T> whereType<T>() => value.whereType<T>();
 
   @override
-  Iterable<T> expand<T>(Iterable<T> Function(E element) f) {
-    assert(f != null);
-
-    return value.expand(f);
-  }
+  Iterable<T> expand<T>(Iterable<T> Function(E) f) => value.expand(f);
 
   @override
-  bool contains(Object value) => this.value.contains(value);
+  bool contains(Object? value) => this.value.contains(value);
 
   @override
-  void forEach(void Function(E element) f) {
-    assert(f != null);
-
+  void forEach(void Function(E) f) {
     value.forEach(f);
   }
 
   @override
-  E reduce(E Function(E value, E element) combine) {
-    assert(combine != null);
-
-    return value.reduce(combine);
-  }
+  E reduce(E Function(E, E) combine) => value.reduce(combine);
 
   @override
-  T fold<T>(T initialValue, T Function(T previousValue, E element) combine) {
-    assert(initialValue != null);
-    assert(combine != null);
-
-    return value.fold(initialValue, combine);
-  }
+  T fold<T>(T initialValue, T Function(T, E) combine) =>
+      value.fold(initialValue, combine);
 
   @override
-  bool every(bool Function(E element) test) {
-    assert(test != null);
-
-    return value.every(test);
-  }
+  bool every(bool Function(E element) test) => value.every(test);
 
   @override
-  String join([String separator = '']) {
-    assert(separator != null);
-
-    return value.join(separator);
-  }
+  String join([String separator = '']) => value.join(separator);
 
   @override
-  bool any(bool Function(E element) test) {
-    assert(test != null);
-
-    return value.any(test);
-  }
+  bool any(bool Function(E element) test) => value.any(test);
 
   @override
   bool add(E value, {bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final valueWasAdded = this.value.add(value);
-
     if (notifyListeners && valueWasAdded) {
       notifyAllListeners(
           CollectionEventType.addition, this.value.length - 1, value);
     }
-
     return valueWasAdded;
   }
 
   @override
   void addAll(Iterable<E> elements, {bool notifyListeners = true}) {
-    assert(elements != null);
-    assert(notifyListeners != null);
-
     final originalLength = value.length;
-
     value.addAll(elements);
 
     if (notifyListeners) {
       if (isObserved && value.length > originalLength) {
         if (hasEvent || hasChangeEvent) {
           final events = <int, E>{};
-
           for (var i = originalLength; i < value.length; i++) {
             final value = elements.elementAt(i - originalLength);
-
             events.addAll(<int, E>{i: value});
-
             notifyChangeListeners(
-              CollectionChangeEvent(CollectionEventType.addition, i, value),
-            );
+                CollectionChangeEvent(CollectionEventType.addition, i, value));
           }
 
           if (events.isNotEmpty) {
             notifyEventListeners(
-              CollectionEvent<int, E>(CollectionEventType.addition, events),
-            );
+                CollectionEvent<int, E>(CollectionEventType.addition, events));
           }
         }
 
@@ -276,11 +221,8 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   }
 
   @override
-  bool remove(Object value, {bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
-    int index;
-
+  bool remove(Object? value, {bool notifyListeners = true}) {
+    int? index;
     if (notifyListeners && isObserved) {
       for (var i = 0; i < this.value.length; i++) {
         if (this.value.elementAt(i) == value) {
@@ -288,73 +230,52 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
         }
       }
     }
-
     final valueWasRemoved = this.value.remove(value);
-
     if (notifyListeners && isObserved && valueWasRemoved) {
-      notifyAllListeners(CollectionEventType.removal, index, value);
+      notifyAllListeners(CollectionEventType.removal, index, value as E);
     }
-
     return valueWasRemoved;
   }
 
   @override
-  E lookup(Object object) => value.lookup(object);
+  E? lookup(Object? object) => value.lookup(object);
 
   @override
-  void removeAll(Iterable<Object> elements, {bool notifyListeners = true}) {
-    assert(elements != null);
-    assert(notifyListeners != null);
-
+  void removeAll(Iterable<Object?> elements, {bool notifyListeners = true}) {
     if (notifyListeners && (hasEvent || hasChangeEvent)) {
       final events = <int, E>{};
-
       final values = toList(growable: false);
-
       for (var i = 0; i < values.length; i++) {
         for (var element in elements) {
           if (values[i] == element) {
             value.remove(element);
-
             final key = i;
-
-            events.addAll(<int, E>{key: element});
-
-            notifyChangeListeners(
-              CollectionChangeEvent(CollectionEventType.removal, key, element),
-            );
+            events.addAll(<int, E>{key: element as E});
+            notifyChangeListeners(CollectionChangeEvent(
+                CollectionEventType.removal, key, element));
           }
         }
       }
-
       if (events.isNotEmpty) {
         notifyEventListeners(
-          CollectionEvent<int, E>(CollectionEventType.removal, events),
-        );
+            CollectionEvent<int, E>(CollectionEventType.removal, events));
       }
     } else {
       value.removeAll(elements);
     }
 
-    if (notifyListeners) {
-      this.notifyListeners(value);
-    }
+    if (notifyListeners) this.notifyListeners(value);
   }
 
   @override
-  void retainAll(Iterable<Object> elements, {bool notifyListeners = true}) {
-    assert(elements != null);
-    assert(notifyListeners != null);
-
+  void retainAll(Iterable<Object?> elements, {bool notifyListeners = true}) {
     if (notifyListeners) {
       final elementsToRemove = <E>{};
-
       for (var element in value) {
         if (!elements.contains(element)) {
           elementsToRemove.add(element);
         }
       }
-
       removeAll(elementsToRemove);
     } else {
       value.retainAll(elements);
@@ -363,18 +284,13 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
 
   @override
   void removeWhere(Test<E> test, {bool notifyListeners = true}) {
-    assert(test != null);
-    assert(notifyListeners != null);
-
     if (notifyListeners) {
       final elementsToRemove = <E>{};
-
       for (var element in value) {
         if (test(element)) {
           elementsToRemove.add(element);
         }
       }
-
       removeAll(elementsToRemove);
     } else {
       value.removeWhere(test);
@@ -383,18 +299,13 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
 
   @override
   void retainWhere(Test<E> test, {bool notifyListeners = true}) {
-    assert(test != null);
-    assert(notifyListeners != null);
-
     if (notifyListeners) {
       final elementsToRemove = <E>{};
-
       for (var element in value) {
         if (!test(element)) {
           elementsToRemove.add(element);
         }
       }
-
       removeAll(elementsToRemove);
     } else {
       value.retainWhere(test);
@@ -402,59 +313,36 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   }
 
   @override
-  bool containsAll(Iterable<Object> other) {
-    assert(other != null);
-
-    return value.containsAll(other);
-  }
+  bool containsAll(Iterable<Object?> other) => value.containsAll(other);
 
   @override
-  Set<E> intersection(Set<Object> other) {
-    assert(other != null);
-
-    return value.intersection(other);
-  }
+  Set<E> intersection(Set<Object?> other) => value.intersection(other);
 
   @override
-  Set<E> union(Set<E> other) {
-    assert(other != null);
-
-    return value.union(other);
-  }
+  Set<E> union(Set<E> other) => value.union(other);
 
   @override
-  Set<E> difference(Set<Object> other) {
-    assert(other != null);
-
-    return value.difference(other);
-  }
+  Set<E> difference(Set<Object?> other) => value.difference(other);
 
   @override
   void clear({bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final elements = notifyListeners ? List<E>.from(value) : null;
-
     value.clear();
 
     if (notifyListeners) {
       if (hasEvent || hasChangeEvent) {
         final events = <int, E>{};
 
-        for (var i = 0; i < elements.length; i++) {
+        for (var i = 0; i < elements!.length; i++) {
           final value = elements[i];
-
           events.addAll(<int, E>{i: value});
-
           notifyChangeListeners(
-            CollectionChangeEvent(CollectionEventType.removal, i, value),
-          );
+              CollectionChangeEvent(CollectionEventType.removal, i, value));
         }
 
         if (events.isNotEmpty) {
           notifyEventListeners(
-            CollectionEvent<int, E>(CollectionEventType.removal, events),
-          );
+              CollectionEvent<int, E>(CollectionEventType.removal, events));
         }
       }
 
@@ -463,11 +351,7 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   }
 
   @override
-  List<E> toList({bool growable = true}) {
-    assert(growable != null);
-
-    return value.toList(growable: false);
-  }
+  List<E> toList({bool growable = true}) => value.toList(growable: growable);
 
   @override
   Set<E> toSet() => value.toSet();
@@ -483,31 +367,23 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
 
   @override
   Iterable<E> take(int count) {
-    assert(count != null && count >= 0);
-
+    assert(count >= 0);
     return value.take(count);
   }
 
   @override
   Iterable<E> takeWhile(bool Function(E value) test) {
-    assert(test != null);
-
     return value.takeWhile(test);
   }
 
   @override
   Iterable<E> skip(int count) {
-    assert(count != null && count >= 0);
-
+    assert(count >= 0);
     return value.skip(count);
   }
 
   @override
-  Iterable<E> skipWhile(bool Function(E value) test) {
-    assert(test != null);
-
-    return value.skipWhile(test);
-  }
+  Iterable<E> skipWhile(bool Function(E value) test) => value.skipWhile(test);
 
   @override
   E get first => value.first;
@@ -519,30 +395,20 @@ class StreamSet<E> extends StreamCollection<Set<E>, int, E> implements Set<E> {
   E get single => value.single;
 
   @override
-  E firstWhere(bool Function(E element) test, {E Function() orElse}) {
-    assert(test != null);
-
-    return value.firstWhere(test, orElse: orElse);
-  }
+  E firstWhere(bool Function(E element) test, {E Function()? orElse}) =>
+      value.firstWhere(test, orElse: orElse);
 
   @override
-  E lastWhere(bool Function(E element) test, {E Function() orElse}) {
-    assert(test != null);
-
-    return value.lastWhere(test, orElse: orElse);
-  }
+  E lastWhere(bool Function(E element) test, {E Function()? orElse}) =>
+      value.lastWhere(test, orElse: orElse);
 
   @override
-  E singleWhere(bool Function(E element) test, {E Function() orElse}) {
-    assert(test != null);
-
-    return value.singleWhere(test, orElse: orElse);
-  }
+  E singleWhere(bool Function(E element) test, {E Function()? orElse}) =>
+      value.singleWhere(test, orElse: orElse);
 
   @override
   E elementAt(int index) {
-    assert(index != null && index >= 0 && index < length);
-
+    assert(index >= 0 && index < length);
     return value.elementAt(index);
   }
 }

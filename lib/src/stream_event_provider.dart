@@ -6,13 +6,13 @@ import 'stream_value.dart';
 /// Base class implemented by classes that provide an event listener.
 abstract class StreamEventProvider<T, E> extends StreamValue<T> {
   /// Base constructor implemented by classes that provide an event listener.
-  StreamEventProvider(T value, {OnUpdate<T> onUpdate, this.onEvent})
+  StreamEventProvider(T value, {OnUpdate<T>? onUpdate, this.onEvent})
       : super(value, onUpdate: onUpdate);
 
   /// Called when an element is added, removed, or updated in the
   /// list/map before [onUpdate] is called and before the listeners
   /// are notified of the new value.
-  OnEvent<E> onEvent;
+  OnEvent<E>? onEvent;
 
   /// The list of active event listeners.
   final List<StreamSubscription<E>> _eventSubscriptions =
@@ -58,17 +58,9 @@ abstract class StreamEventProvider<T, E> extends StreamValue<T> {
 
   /// Notifies all subscribed event listeners of an [event].
   void notifyEventListeners(E event) {
-    if (wasDisposed && hasEvent) {
-      throw StreamException();
-    }
-
-    if (onEvent != null) {
-      onEvent(event);
-    }
-
-    if (hasEventListener) {
-      _eventNotifier.sink.add(event);
-    }
+    if (wasDisposed && hasEvent) throw StreamException();
+    if (onEvent != null) onEvent!(event);
+    if (hasEventListener) _eventNotifier.sink.add(event);
   }
 
   @override
@@ -76,10 +68,8 @@ abstract class StreamEventProvider<T, E> extends StreamValue<T> {
     for (var subscription in _eventSubscriptions) {
       subscription.cancel();
     }
-
     _eventSubscriptions.clear();
     _eventNotifier.close();
-
     super.dispose();
   }
 }

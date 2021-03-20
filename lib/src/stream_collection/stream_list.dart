@@ -43,13 +43,12 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   /// [onChange] is a synchronous event called individually for every
   /// element added, removed, or updated in the collection.
   StreamList({
-    List<E> value,
-    int length,
-    OnUpdate<List<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
+    List<E>? value,
+    OnUpdate<List<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
   }) : super(
-          value ?? length == null ? <E>[] : List<E>(length),
+          value ?? <E>[],
           onUpdate: onUpdate,
           onEvent: onEvent,
           onChange: onChange,
@@ -92,16 +91,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     int length,
     E fill, {
     bool growable = false,
-    OnUpdate<List<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
-  }) =>
-      StreamList(
-        value: List<E>.filled(length, fill, growable: growable),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<List<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
+  }) {
+    return StreamList(
+      value: List<E>.filled(length, fill, growable: growable),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Creates a list containing all [elements].
   ///
@@ -122,16 +122,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   factory StreamList.from(
     Iterable elements, {
     bool growable = true,
-    OnUpdate<List<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
-  }) =>
-      StreamList(
-        value: List<E>.from(elements, growable: growable),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<List<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
+  }) {
+    return StreamList(
+      value: List<E>.from(elements, growable: growable),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Creates a list from [elements].
   ///
@@ -142,16 +143,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   factory StreamList.of(
     Iterable<E> elements, {
     bool growable = true,
-    OnUpdate<List<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
-  }) =>
-      StreamList(
-        value: List<E>.of(elements, growable: growable),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<List<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
+  }) {
+    return StreamList(
+      value: List<E>.of(elements, growable: growable),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Generates a list of values.
   ///
@@ -168,16 +170,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     int count,
     _Generator<E> generator, {
     bool growable = true,
-    OnUpdate<List<E>> onUpdate,
-    OnEvent<CollectionEvent<int, E>> onEvent,
-    OnChange<CollectionChangeEvent<int, E>> onChange,
-  }) =>
-      StreamList(
-        value: List<E>.generate(count, generator, growable: growable),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<List<E>>? onUpdate,
+    OnEvent<CollectionEvent<int, E>>? onEvent,
+    OnChange<CollectionChangeEvent<int, E>>? onChange,
+  }) {
+    return StreamList(
+      value: List<E>.generate(count, generator, growable: growable),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   /// Adapts [source] to be a `StreamList<T>`.
   ///
@@ -201,16 +204,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   /// element added, removed, or updated in the collection.
   static StreamList<T> castFrom<S, T>(
     List<S> source, {
-    OnUpdate<List<T>> onUpdate,
-    OnEvent<CollectionEvent<int, T>> onEvent,
-    OnChange<CollectionChangeEvent<int, T>> onChange,
-  }) =>
-      StreamList(
-        value: List.castFrom<S, T>(source),
-        onUpdate: onUpdate,
-        onEvent: onEvent,
-        onChange: onChange,
-      );
+    OnUpdate<List<T>>? onUpdate,
+    OnEvent<CollectionEvent<int, T>>? onEvent,
+    OnChange<CollectionChangeEvent<int, T>>? onChange,
+  }) {
+    return StreamList(
+      value: List.castFrom<S, T>(source),
+      onUpdate: onUpdate,
+      onEvent: onEvent,
+      onChange: onChange,
+    );
+  }
 
   @override
   Iterator<E> get iterator => value.iterator;
@@ -222,7 +226,7 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   Iterable<E> followedBy(Iterable<E> other) => value.followedBy(other);
 
   @override
-  List<T> map<T>(_Mapper<T, E> f) => value.map<T>(f);
+  Iterable<T> map<T>(_Mapper<T, E> f) => value.map<T>(f);
 
   @override
   Iterable<E> where(Test<E> test) => value.where(test);
@@ -234,7 +238,7 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   Iterable<T> expand<T>(_Expand<T, E> f) => value.expand<T>(f);
 
   @override
-  bool contains(Object element) => value.contains(element);
+  bool contains(Object? element) => value.contains(element);
 
   @override
   void forEach(_ForEach<E> f) => value.forEach(f);
@@ -299,10 +303,8 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     void addEvent(int index) {
       events.addAll(<int, E>{index: value[index]});
 
-      notifyChangeListeners(
-        CollectionChangeEvent(
-            CollectionEventType.addition, index, value[index]),
-      );
+      notifyChangeListeners(CollectionChangeEvent(
+          CollectionEventType.addition, index, value[index]));
     }
 
     if (newLength > originalLength) {
@@ -331,10 +333,7 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
 
   @override
   void add(E value, {bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     this.value.add(value);
-
     if (notifyListeners) {
       notifyAllListeners(
           CollectionEventType.addition, this.value.length - 1, value);
@@ -343,13 +342,8 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
 
   @override
   void addAll(Iterable<E> iterable, {bool notifyListeners = true}) {
-    assert(iterable != null);
-    assert(notifyListeners != null);
-
     final startIndex = value.length;
-
     value.addAll(iterable);
-
     if (notifyListeners) {
       _notifyEventListeners(CollectionEventType.addition, iterable, startIndex);
       this.notifyListeners(value);
@@ -378,15 +372,15 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   E get single => value.single;
 
   @override
-  E firstWhere(Test<E> test, {_OrElse<E> orElse}) =>
+  E firstWhere(Test<E> test, {_OrElse<E>? orElse}) =>
       value.firstWhere(test, orElse: orElse);
 
   @override
-  E lastWhere(Test<E> test, {_OrElse<E> orElse}) =>
+  E lastWhere(Test<E> test, {_OrElse<E>? orElse}) =>
       value.lastWhere(test, orElse: orElse);
 
   @override
-  E singleWhere(Test<E> test, {_OrElse<E> orElse}) =>
+  E singleWhere(Test<E> test, {_OrElse<E>? orElse}) =>
       value.singleWhere(test, orElse: orElse);
 
   @override
@@ -397,44 +391,34 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
 
   /// Reverses the order of the elements in this list.
   void reverse({bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final elements = notifyListeners ? _toList() : null;
-
     value = List<E>.from(value.reversed);
-
     if (notifyListeners) {
-      _notifyEventListeners(CollectionEventType.update, elements);
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.update, elements);
+      }
       this.notifyListeners(value);
     }
   }
 
   @override
-  void sort([_Compare<E> compare, bool notifyListeners = true]) {
-    assert(notifyListeners != null);
-
-    final elements = notifyListeners ? _toList() : null;
-
+  void sort([_Compare<E>? compare, bool notifyListeners = true]) {
+    final elements = _toList();
     value.sort(compare);
-
-    if (notifyListeners) {
+    if (elements != null) {
       _notifyEventListeners(CollectionEventType.update, elements);
-      this.notifyListeners(value);
     }
+    if (notifyListeners) this.notifyListeners(value);
   }
 
   @override
-  void shuffle([Random random, bool notifyListeners = true]) {
-    assert(notifyListeners != null);
-
-    final elements = notifyListeners ? _toList() : null;
-
+  void shuffle([Random? random, bool notifyListeners = true]) {
+    final elements = _toList();
     value.shuffle(random);
-
-    if (notifyListeners) {
+    if (elements != null) {
       _notifyEventListeners(CollectionEventType.update, elements);
-      this.notifyListeners(value);
     }
+    if (notifyListeners) this.notifyListeners(value);
   }
 
   @override
@@ -445,31 +429,27 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
       value.indexWhere(test, start);
 
   @override
-  int lastIndexWhere(Test<E> test, [int start]) =>
+  int lastIndexWhere(Test<E> test, [int? start]) =>
       value.lastIndexWhere(test, start);
 
   @override
-  int lastIndexOf(E element, [int start]) => value.lastIndexOf(element, start);
+  int lastIndexOf(E element, [int? start]) => value.lastIndexOf(element, start);
 
   @override
   void clear({bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final elements = notifyListeners ? _toList() : null;
-
     value.clear();
-
     if (notifyListeners) {
-      _notifyEventListeners(CollectionEventType.removal, elements);
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.removal, elements);
+      }
       this.notifyListeners(value);
     }
   }
 
   @override
   void insert(int index, E element, {bool notifyListeners = true}) {
-    assert(index != null && index >= 0 && index <= length);
-    assert(notifyListeners != null);
-
+    assert(index >= 0 && index <= length);
     value.insert(index, element);
     notifyAllListeners(CollectionEventType.addition, index, element);
   }
@@ -480,12 +460,8 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     Iterable<E> iterable, {
     bool notifyListeners = true,
   }) {
-    assert(index != null && index >= 0 && index <= length);
-    assert(iterable != null);
-    assert(notifyListeners != null);
-
+    assert(index >= 0 && index <= length);
     value.insertAll(index, iterable);
-
     if (notifyListeners) {
       _notifyEventListeners(CollectionEventType.addition, iterable, index);
       this.notifyListeners(value);
@@ -494,66 +470,54 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
 
   @override
   void setAll(int index, Iterable<E> iterable, {bool notifyListeners = true}) {
-    assert(index != null && index >= 0 && index <= length);
-    assert(iterable != null && index + iterable.length <= length);
-    assert(notifyListeners != null);
-
+    assert(index >= 0 && index <= length);
+    assert(index + iterable.length <= length);
     final elements = notifyListeners ? _toList() : null;
-
     value.setAll(index, iterable);
-
-    if (notifyListeners != null) {
-      _notifyEventListeners(CollectionEventType.update, elements, index);
+    if (notifyListeners) {
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.update, elements, index);
+      }
       this.notifyListeners(value);
     }
   }
 
   @override
-  bool remove(Object value, {bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
-    final index = notifyListeners ? this.value.indexOf(value) : null;
+  bool remove(Object? value, {bool notifyListeners = true}) {
+    if (value == null && !contains(null)) {
+      return false;
+    } else if (value != null && value is! E) {
+      return false;
+    }
+    final index = notifyListeners ? this.value.indexOf(value as E) : null;
     final removed = this.value.remove(value);
-
     if (notifyListeners && removed) {
       notifyAllListeners(CollectionEventType.removal, index, value as E);
     }
-
     return removed;
   }
 
   @override
   E removeAt(int index, {bool notifyListeners = true}) {
     assert(index >= 0 && index < length);
-    assert(notifyListeners != null);
-
     final element = value.removeAt(index);
-
     if (notifyListeners) {
       notifyAllListeners(CollectionEventType.removal, index, element);
     }
-
     return element;
   }
 
   @override
   E removeLast({bool notifyListeners = true}) {
-    assert(notifyListeners != null);
-
     final element = value.removeLast();
-
     if (notifyListeners) {
       notifyAllListeners(CollectionEventType.removal, value.length, element);
     }
-
     return element;
   }
 
   @override
   void removeWhere(Test<E> test, {bool notifyListeners = true}) {
-    assert(test != null);
-    assert(notifyListeners != null);
-
     if (notifyListeners) {
       _removeOrRetainWhere(true, test);
     } else {
@@ -563,9 +527,6 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
 
   @override
   void retainWhere(Test<E> test, {bool notifyListeners = true}) {
-    assert(test != null);
-    assert(notifyListeners != null);
-
     if (notifyListeners) {
       _removeOrRetainWhere(false, test);
     } else {
@@ -574,15 +535,11 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   }
 
   void _removeOrRetainWhere(bool remove, Test<E> test) {
-    assert(remove != null);
-    assert(test != null);
-
-    final elements = _toList();
+    final elements = _toList()!;
     final removed = <int, E>{};
 
     for (var i = 0; i < elements.length; i++) {
       final element = elements[i];
-
       if (remove ? test(element) : !test(element)) {
         value.remove(element);
         removed.addAll(<int, E>{i: element});
@@ -591,13 +548,10 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
       }
     }
 
-    if (removed.isEmpty) {
-      return;
-    }
+    if (removed.isEmpty) return;
 
     notifyEventListeners(
         CollectionEvent<int, E>(CollectionEventType.removal, removed));
-
     notifyListeners(value);
   }
 
@@ -605,7 +559,7 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   StreamList<E> operator +(List<E> other) => StreamList(value: value + other);
 
   @override
-  List<E> sublist(int start, [int end]) => value.sublist(start, end);
+  List<E> sublist(int start, [int? end]) => value.sublist(start, end);
 
   @override
   Iterable<E> getRange(int start, int end) => value.getRange(start, end);
@@ -618,36 +572,32 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     int skipCount = 0,
     bool notifyListeners = true,
   ]) {
-    assert(start != null && start >= 0 && start <= length);
-    assert(end != null && end >= start && end <= length);
-    assert(iterable != null && iterable.length - skipCount >= end - start);
-    assert(skipCount != null && skipCount >= 0);
-    assert(notifyListeners != null);
-
+    assert(start >= 0 && start <= length);
+    assert(end >= start && end <= length);
+    assert(iterable.length - skipCount >= end - start);
+    assert(skipCount >= 0);
     final elements =
         notifyListeners ? _toList(start + skipCount, end + skipCount) : null;
-
     value.setRange(start, end, iterable, skipCount);
-
     if (notifyListeners) {
-      _notifyEventListeners(
-          CollectionEventType.update, elements, start + skipCount);
+      if (elements != null) {
+        _notifyEventListeners(
+            CollectionEventType.update, elements, start + skipCount);
+      }
       this.notifyListeners(value);
     }
   }
 
   @override
   void removeRange(int start, int end, {bool notifyListeners = true}) {
-    assert(start != null && start >= 0 && start <= length);
-    assert(end != null && end >= start && end <= length);
-    assert(notifyListeners != null);
-
+    assert(start >= 0 && start <= length);
+    assert(end >= start && end <= length);
     final elements = notifyListeners ? _toList(start, end) : null;
-
     value.removeRange(start, end);
-
     if (notifyListeners) {
-      _notifyEventListeners(CollectionEventType.removal, elements, start);
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.removal, elements, start);
+      }
       this.notifyListeners(value);
     }
   }
@@ -656,19 +606,17 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   void fillRange(
     int start,
     int end, [
-    E fillValue,
+    E? fillValue,
     bool notifyListeners = true,
   ]) {
-    assert(start != null && start >= 0 && start <= length);
-    assert(end != null && end >= start && end <= length);
-    assert(notifyListeners != null);
-
+    assert(start >= 0 && start <= length);
+    assert(end >= start && end <= length);
     final elements = notifyListeners ? _toList(start, end) : null;
-
     value.fillRange(start, end, fillValue);
-
     if (notifyListeners) {
-      _notifyEventListeners(CollectionEventType.update, elements, start);
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.update, elements, start);
+      }
       this.notifyListeners(value);
     }
   }
@@ -702,18 +650,16 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
     Iterable<E> replacement, {
     bool notifyListeners = true,
   }) {
-    assert(start != null && start >= 0 && start <= length);
-    assert(end != null && end >= start && end <= length);
-    assert(replacement != null && replacement.length >= end - start);
-    assert(notifyListeners != null);
-
+    assert(start >= 0 && start <= length);
+    assert(end >= start && end <= length);
+    assert(replacement.length >= end - start);
     final elements = notifyListeners ? _toList(start, end) : null;
-
     value.replaceRange(start, end, replacement);
-
     if (notifyListeners) {
-      _notifyEventListeners(CollectionEventType.removal, elements, start);
-      _notifyEventListeners(CollectionEventType.addition, replacement, start);
+      if (elements != null) {
+        _notifyEventListeners(CollectionEventType.removal, elements, start);
+        _notifyEventListeners(CollectionEventType.addition, replacement, start);
+      }
       this.notifyListeners(value);
     }
   }
@@ -724,7 +670,7 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
   /// Copies [value]'s elements from [start] to [end], but returns
   /// `null` if [onEvent] and [onChange] is `null` and there are no
   /// active event or change listeners.
-  List<E> _toList([int start, int end]) => hasEvent || hasChangeEvent
+  List<E>? _toList([int? start, int? end]) => hasEvent || hasChangeEvent
       ? value.sublist(start ?? 0, end ?? value.length)
       : null;
 
@@ -738,7 +684,6 @@ class StreamList<E> extends StreamCollection<List<E>, int, E>
       return;
     }
 
-    assert(eventType != null);
     assert(start >= 0);
 
     final events = <int, E>{};

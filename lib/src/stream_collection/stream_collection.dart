@@ -23,9 +23,7 @@ enum CollectionEventType {
 /// by a collection's event listeners and [onEvent] parameter.
 class CollectionEvent<K, V> {
   /// An event containing changes made to a [StreamCollection].
-  const CollectionEvent(this.type, this.elements)
-      : assert(type != null),
-        assert(elements != null);
+  const CollectionEvent(this.type, this.elements);
 
   /// The type of change made to the collection: addition, removal, or update.
   final CollectionEventType type;
@@ -36,30 +34,29 @@ class CollectionEvent<K, V> {
   /// index of the elements. In the event of a removal, the
   /// key/index will no longer be present in the collection
   /// when this event is received.
-  final Map<K, V> elements;
+  final Map<K?, V?> elements;
 
   /// Returns the keys/indexes of the [elements] affected by the event as a list.
-  List<K> get keys => elements.keys.toList();
+  List<K?> get keys => elements.keys.toList();
 
   /// Returns the values of the [elements] affected by the event as a list.
-  List<V> get values => elements.values.toList();
+  List<V?> get values => elements.values.toList();
 }
 
 /// An event containing a single change made to a [StreamCollection], returned
 /// by a collection's change listeners and [onChange] parameter.
 class CollectionChangeEvent<K, V> {
   /// An event containing a single change made to a [StreamCollection].
-  const CollectionChangeEvent(this.type, this.key, this.value)
-      : assert(type != null);
+  const CollectionChangeEvent(this.type, this.key, this.value);
 
   /// The type of change made to the collection: addition, removal, or update.
   final CollectionEventType type;
 
   /// The key or index of the affected element.
-  final K key;
+  final K? key;
 
   /// The value of the affected element.
-  final V value;
+  final V? value;
 }
 
 /// The base class for an observable collection of elements (list, map, or set.)
@@ -80,15 +77,15 @@ abstract class StreamCollection<C, K, V>
   /// element added, removed, or updated in the collection.
   StreamCollection(
     C collection, {
-    OnUpdate<C> onUpdate,
-    OnEvent<CollectionEvent<K, V>> onEvent,
+    OnUpdate<C>? onUpdate,
+    OnEvent<CollectionEvent<K, V>>? onEvent,
     this.onChange,
   })  : assert(collection != null),
         super(collection, onUpdate: onUpdate, onEvent: onEvent);
 
   /// A synchronous event called individually for every element added,
   /// removed, or updated in the collection.
-  OnChange<CollectionChangeEvent<K, V>> onChange;
+  OnChange<CollectionChangeEvent<K, V>>? onChange;
 
   /// The list of active change listeners.
   final List<StreamSubscription<CollectionChangeEvent<K, V>>>
@@ -134,23 +131,15 @@ abstract class StreamCollection<C, K, V>
 
   /// Notifies all subscribed changes listeners of an [event].
   void notifyChangeListeners(CollectionChangeEvent<K, V> event) {
-    if (wasDisposed && hasChangeEvent) {
-      throw StreamException();
-    }
-
-    if (onChange != null) {
-      onChange(event);
-    }
-
-    if (hasChangeListener) {
-      _changeNotifier.sink.add(event);
-    }
+    if (wasDisposed && hasChangeEvent) throw StreamException();
+    if (onChange != null) onChange!(event);
+    if (hasChangeListener) _changeNotifier.sink.add(event);
   }
 
   /// Notifies every active update, event, and change listener, as well as
   /// the [onUpdate], [onEvent], and [onChange] parameters of an event
   /// affecting a single element.
-  void notifyAllListeners(CollectionEventType type, K key, V value) {
+  void notifyAllListeners(CollectionEventType type, K? key, V? value) {
     if (hasChangeEvent) {
       notifyChangeListeners(
         CollectionChangeEvent(type, key, value),
@@ -158,7 +147,7 @@ abstract class StreamCollection<C, K, V>
     }
 
     if (hasEvent) {
-      notifyEventListeners(CollectionEvent(type, <K, V>{key: value}));
+      notifyEventListeners(CollectionEvent(type, <K?, V?>{key: value}));
     }
 
     if (hasUpdate) {
@@ -171,10 +160,8 @@ abstract class StreamCollection<C, K, V>
     for (var subscription in _changeSubscriptions) {
       subscription.cancel();
     }
-
     _changeSubscriptions.clear();
     _changeNotifier.close();
-
     super.dispose();
   }
 }
